@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  emailVerified DateTime?
+  createdAt     DateTime   @default(now())
+  orders        Order[]
+  usageLogs     UsageLog[]
+  sessions      Session[]
+}
+
+// Auth.js (next-auth) 邮箱验证码/magic link 登录所需的表
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// 一次性付费订单：月卡（unlimited 30天）或次数包（100次）
+// status: pending(待人工核销) / paid(已开通)
+model Order {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  packageType String // "monthly" | "pack100"
+  amount      Int // 单位:分
+  status      String    @default("pending") // "pending" | "paid"
+  remitNote   String? // 用户转账备注,用于人工核销匹配
+  paidAt      DateTime?
+  // monthly 套餐的到期时间;pack100 套餐不用这个字段
+  expiresAt   DateTime?
+  // pack100 套餐剩余次数;monthly 套餐不用这个字段
+  remainingCount Int?
+  createdAt   DateTime  @default(now())
+}
+
+// 每次成功调用改写接口记一条,用于统计免费额度当日已用次数
+model UsageLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
