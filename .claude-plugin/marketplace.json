@@ -1,0 +1,14 @@
+{
+  "name": "money-marketplace",
+  "owner": {
+    "name": "money-project"
+  },
+  "description": "本地插件市场，用于测试和分发这个工作目录下的自制 Claude Code 插件。",
+  "plugins": [
+    {
+      "name": "content-repurposer",
+      "source": "./plugins/content-repurposer",
+      "description": "将文章/文案一键改写成小红书、Twitter/X、公众号、短视频口播稿、知乎等平台原生风格版本。"
+    }
+  ]
+}

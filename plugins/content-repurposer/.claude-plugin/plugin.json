@@ -1,0 +1,11 @@
+{
+  "name": "content-repurposer",
+  "displayName": "内容一键多平台改写",
+  "version": "0.1.0",
+  "description": "将一篇文章、视频脚本或笔记，一键改写成小红书笔记、Twitter/X 线程、公众号图文、抖音/视频号口播稿、知乎回答等平台原生风格的多个版本。",
+  "author": {
+    "name": "money-project"
+  },
+  "license": "MIT",
+  "keywords": ["content", "repurpose", "social-media", "小红书", "自媒体", "内容分发"]
+}
