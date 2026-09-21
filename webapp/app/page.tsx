@@ -95,7 +95,19 @@ export default function Home() {
           {loading ? "生成中..." : "生成"}
         </button>
 
-        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+        {error && (
+          <p className="mt-4 text-sm text-red-600">
+            {error}
+            {error.includes("登录") && (
+              <>
+                {" "}
+                <a href="/login" className="underline">
+                  去登录
+                </a>
+              </>
+            )}
+          </p>
+        )}
 
         {results && (
           <div className="mt-10 space-y-8">
